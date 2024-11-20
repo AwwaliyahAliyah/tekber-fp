@@ -57,10 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final note = notes[index];
                   return NoteCard(
-                    title: note.title,
-                    date: note.date,
-                    content: note.content,
-                    isFavorite: note.isFavorite,
+                    note: note,
                     onFavoriteToggle: () => noteProvider.toggleFavorite(note),
                   );
                 },

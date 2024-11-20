@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
+import '../screens/models/note_model.dart';
 import '../screens/note_detail.dart';
 
 class NoteCard extends StatelessWidget {
-  final String title;
-  final String date;
-  final String content;
-  final bool isFavorite;
+  final Note note;
   final VoidCallback onFavoriteToggle;
 
   NoteCard({
-    required this.title, 
-    required this.date, 
-    required this.content, 
-    required this.isFavorite, 
+    required this.note,
     required this.onFavoriteToggle
   });
 
@@ -24,16 +19,16 @@ class NoteCard extends StatelessWidget {
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
-          title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-          subtitle: Text(date, style: TextStyle(color: Colors.grey[600])),
+          title: Text(note.title, style: TextStyle(fontWeight: FontWeight.w600)),
+          subtitle: Text(note.date, style: TextStyle(color: Colors.grey[600])),
           leading: CircleAvatar(
             backgroundColor: Colors.teal[200],
             child: Icon(Icons.book, color: Colors.white),
           ),
           trailing: IconButton(
             icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red : Colors.grey,
+              note.isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: note.isFavorite ? Colors.red : Colors.grey,
             ),
             onPressed: onFavoriteToggle,
           ),
@@ -42,9 +37,7 @@ class NoteCard extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => NoteDetailScreen(
-                  title: title,
-                  date: date,
-                  content: content,
+                  note: note,
                 ),
               ),
             );

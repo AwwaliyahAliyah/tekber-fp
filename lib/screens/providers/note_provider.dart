@@ -21,4 +21,11 @@ class NoteProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateNote(Note oldNote, Note updatedNote) {
+    final noteIndex = _notes.indexOf(oldNote);
+    if (noteIndex != -1) {
+      _notes[noteIndex] = updatedNote;
+      notifyListeners();
+    }
+  }
 }

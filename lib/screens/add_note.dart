@@ -108,7 +108,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       onPressed: _saveNote,
                       icon: Icon(Icons.save, color: Colors.grey[100]),
                       label: Text(
-                        'Simpan Catatan',
+                        'Simpan',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -117,8 +117,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal[400],
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding:EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        elevation: 6
                       ),
                     ),
                   ],

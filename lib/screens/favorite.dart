@@ -36,10 +36,7 @@ class FavoriteScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final note = favoriteNotes[index];
                 return NoteCard(
-                  title: note.title,
-                  date: note.date,
-                  content: note.content,
-                  isFavorite: note.isFavorite,
+                  note: note,
                   onFavoriteToggle: () =>
                       Provider.of<NoteProvider>(context, listen: false)
                           .toggleFavorite(note),
