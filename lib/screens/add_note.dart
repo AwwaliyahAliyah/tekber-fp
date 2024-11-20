@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:progresfp1/screens/providers/note_provider.dart';
-import 'package:progresfp1/screens/models/note_model.dart';
+import '../models/note_model.dart';
+import '../providers/note_provider.dart';
 
 class AddNoteScreen extends StatefulWidget {
   @override

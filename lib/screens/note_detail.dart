@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progresfp1/screens/edit_note.dart';
-import 'package:progresfp1/screens/models/note_model.dart';
+import '../models/note_model.dart';
 import 'package:provider/provider.dart';
-import 'providers/note_provider.dart';
+import '../providers/note_provider.dart';
 
 class NoteDetailScreen extends StatefulWidget {
   final Note note;

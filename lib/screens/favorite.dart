@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/note_provider.dart';
+import '../providers/note_provider.dart';
 import 'package:progresfp1/widgets/category_section.dart';
 import 'package:progresfp1/widgets/note_card.dart';
 

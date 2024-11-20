@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:progresfp1/widgets/category_section.dart';
 import 'package:progresfp1/screens/favorite.dart';
 import 'package:progresfp1/screens/profile.dart';
-import 'package:progresfp1/screens/providers/note_provider.dart';
+import '../providers/note_provider.dart';
 import '../widgets/note_card.dart';
 import 'add_note.dart';
 
