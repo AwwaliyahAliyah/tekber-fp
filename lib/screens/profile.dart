@@ -25,9 +25,9 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey[700]),
             ),
             SizedBox(height: 24),
-            buildProfileDetailRow(Icons.calendar_today, 'Date Joined:', '01 January 2022'),
+            buildProfileDetailRow(Icons.calendar_today, 'Tanggal Bergabung:', '01 Januari 2022'),
             SizedBox(height: 16),
-            buildProfileDetailRow(Icons.note, 'Total Notes:', '42'),
+            buildProfileDetailRow(Icons.note, 'Jumlah Catatan:', '3'),
             SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
