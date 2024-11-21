@@ -36,11 +36,21 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
       isFavorite: widget.note.isFavorite, // Mempertahankan status favorit
     );
 
-    Provider.of<NoteProvider>(context, listen: false)
-        .updateNote(widget.note, updatedNote);
+    Provider.of<NoteProvider>(context, listen: false).updateNote(widget.note, updatedNote);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Catatan berhasil diperbarui!')),
+    );
+
+    Navigator.pop(context); // Kembali ke layar sebelumnya
+  }
+
+  void _deleteNote(BuildContext context) {
+    // Memanggil provider untuk menghapus catatan
+    Provider.of<NoteProvider>(context, listen: false).deleteNote(widget.note);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Catatan berhasil dihapus!')),
     );
 
     Navigator.pop(context); // Kembali ke layar sebelumnya
@@ -197,14 +207,46 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Logika hapus catatan
+                    // Dialog konfirmasi hapus
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text('Konfirmasi'),
+                        content: Text(
+                            'Apakah Anda yakin ingin menghapus catatan ini?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(ctx); // Menutup dialog
+                              Navigator.pop(context); // Kembali ke halaman home
+                            },
+                            child: Text(
+                              'Batal',
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(ctx); // Menutup dialog
+                              _deleteNote(context); // Menghapus catatan
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red[400]),
+                            child: Text(
+                              'Hapus',
+                              style: TextStyle(color: Colors.grey[100]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   icon: Icon(Icons.delete, color: Colors.grey[100]),
                   label: Text(
                     'Hapus',
                     style: TextStyle(
-                      fontSize: 16, 
-                      fontWeight: FontWeight.bold, 
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                       color: Colors.grey[100]
                     ),
                   ),
