@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('EduNotes+', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[100])),
+        title: Text('MyNotes+', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[100])),
         backgroundColor: Colors.teal[400],
         iconTheme: IconThemeData(color: Colors.grey[300]),
         actions: [

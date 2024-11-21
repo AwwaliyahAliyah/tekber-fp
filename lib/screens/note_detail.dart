@@ -148,6 +148,39 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                         content = result['content'];
                       });
                     }
+
+                    // Tampilkan dialog konfirmasi
+                    Future.delayed(Duration(milliseconds: 300), () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text('Konfirmasi'),
+                          content: Text(
+                              'Apakah Anda yakin ingin menyimpan perubahan?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(ctx); // Menutup dialog
+                                Navigator.pop(
+                                    context); // Kembali ke halaman home
+                              },
+                              child: Text('Batal',
+                                  style: TextStyle(color: Colors.grey[600])),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(ctx); // Menutup dialog
+                                _updateNote(context); // Menyimpan catatan
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.teal[400]),
+                              child: Text('OK',
+                                  style: TextStyle(color: Colors.grey[100])),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
                   },
                   icon: Icon(Icons.edit, color: Colors.grey[100]),
                   label: Text(
@@ -162,16 +195,18 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   ),
                 ),
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () {
-                    _updateNote(context);
+                    // Logika hapus catatan
                   },
-                  child: Text(
-                    'OK',
+                  icon: Icon(Icons.delete, color: Colors.grey[100]),
+                  label: Text(
+                    'Hapus',
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[100]),
+                      fontSize: 16, 
+                      fontWeight: FontWeight.bold, 
+                      color: Colors.grey[100]
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal[400],

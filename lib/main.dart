@@ -16,7 +16,7 @@ class NoteTakingApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'EduNotes+',
+        title: 'MyNotes+',
         theme: ThemeData(
           primarySwatch: Colors.teal,
           scaffoldBackgroundColor: Colors.blueGrey[100],
