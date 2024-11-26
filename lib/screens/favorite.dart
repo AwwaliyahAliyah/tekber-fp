@@ -9,13 +9,17 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final favoriteNotes = Provider.of<NoteProvider>(context).favoriteNotes;
 
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 12),
-          TextField(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 12),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 16.0,
+            top: 16.0,
+            right: 16.0,
+          ),
+          child: TextField(
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
               hintText: 'Search notes',
@@ -27,10 +31,18 @@ class FavoriteScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 24),
-          CategorySection(),
-          SizedBox(height: 16),
-          Expanded(
+        ),
+        SizedBox(height: 24),
+        // Kategori dengan padding langsung
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: CategorySection(),
+        ),
+        SizedBox(height: 16),
+        // List Favorite Notes
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView.builder(
               itemCount: favoriteNotes.length,
               itemBuilder: (context, index) {
@@ -44,8 +56,8 @@ class FavoriteScreen extends StatelessWidget {
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

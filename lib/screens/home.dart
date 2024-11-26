@@ -29,14 +29,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Konten untuk setiap tab
     List<Widget> _pages = [
-      // Halaman "Home"
-      Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 12),
-            TextField(
+      // Halaman "Home" tanpa padding luar
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 12),
+          // Search Bar dengan padding langsung
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 16.0, 
+              top: 16.0, 
+              right: 16.0
+            ),
+            child: TextField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Search notes',
@@ -48,10 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 24),
-            CategorySection(),
-            SizedBox(height: 16),
-            Expanded(
+          ),
+          SizedBox(height: 24),
+          // Kategori dengan padding langsung
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 0),
+            child: CategorySection(),
+          ),
+          SizedBox(height: 16),
+          // List Notes dengan padding langsung
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0),
               child: ListView.builder(
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
@@ -63,83 +78,80 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-
       // Halaman "Favorit"
       FavoriteScreen(),
-
       // Halaman "Profil"
       ProfileScreen(),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyNotes+', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[100])),
+        title: Text('MyNotes+',
+            style: TextStyle(
+              fontWeight: FontWeight.w600, color: Colors.grey[100])),
         backgroundColor: Colors.teal[400],
         iconTheme: IconThemeData(color: Colors.grey[300]),
         actions: [
           if (_selectedIndex == 0 || _selectedIndex == 1)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Pengaturan'),
-                    content: Text('Fitur pengaturan akan segera hadir!'),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('Tutup')),
-                    ],
-                  ),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Pengaturan'),
+                      content: Text('Fitur pengaturan akan segera hadir!'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Tutup')),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-
           if (_selectedIndex == 2)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: IconButton(
-              icon: Icon(Icons.more_vert),
-              tooltip: 'Logout',
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Logout'),
-                    content: Text('Fitur logout akan segera hadir!'),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('Tutup')),
-                    ],
-                  ),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: IconButton(
+                icon: Icon(Icons.more_vert),
+                tooltip: 'Logout',
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Logout'),
+                      content: Text('Fitur logout akan segera hadir!'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Tutup')),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
-
       body: _pages[_selectedIndex],
       floatingActionButton: _selectedIndex == 0
-      ? FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddNoteScreen()));
-          },
-          child: Icon(Icons.add, color: Colors.grey[100]),
-          tooltip: 'Tambah Catatan',
-          backgroundColor: Colors.teal[400],
-        )
-      : null,
-
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddNoteScreen()));
+              },
+              child: Icon(Icons.add, color: Colors.grey[100]),
+              tooltip: 'Tambah Catatan',
+              backgroundColor: Colors.teal[400],
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
