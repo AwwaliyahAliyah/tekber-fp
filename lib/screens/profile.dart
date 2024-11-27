@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/note_provider.dart';
+import '../providers/user_provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -15,20 +18,59 @@ class ProfileScreen extends StatelessWidget {
               child: Icon(Icons.person, size: 50, color: Colors.white),
             ),
             SizedBox(height: 16),
-            Text(
-              'Nama Pengguna',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+
+            // Menampilkan nama pengguna
+            Consumer<UserProvider>(
+              builder: (context, userProvider, _) {
+                return Text(
+                  userProvider.name.isNotEmpty
+                    ? userProvider.name
+                    : 'Nama Pengguna',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                );
+              },
             ),
             SizedBox(height: 8),
-            Text(
-              'email@example.com',
-              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+
+            // Menampilkan email
+            Consumer<UserProvider>(
+              builder: (context, userProvider, _) {
+                return Text(
+                  userProvider.email.isNotEmpty
+                    ? userProvider.email
+                    : 'email@example.com',
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                );
+              },
             ),
             SizedBox(height: 24),
-            buildProfileDetailRow(Icons.calendar_today, 'Tanggal Bergabung:', '01 Januari 2022'),
+
+            // Menampilkan tanggal bergabung
+            Consumer<UserProvider>(
+              builder: (context, userProvider, _) {
+                return buildProfileDetailRow(
+                  Icons.calendar_today,
+                  'Tanggal Bergabung:',
+                  userProvider.joinDate.isNotEmpty
+                    ? userProvider.joinDate
+                    : '01 November 2024',
+                );
+              },
+            ),
             SizedBox(height: 16),
-            buildProfileDetailRow(Icons.note, 'Jumlah Catatan:', '3'),
+
+            // Menampilkan jumlah catatan
+            Consumer<NoteProvider>(
+              builder: (context, noteProvider, _) {
+                return buildProfileDetailRow(
+                  Icons.note,
+                  'Jumlah Catatan:',
+                  '${noteProvider.notes.length}',
+                );
+              },
+            ),
             SizedBox(height: 24),
+            
             ElevatedButton.icon(
               onPressed: () {
                 // Add your edit profile functionality here
@@ -37,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
               label: Text("Edit Profile"),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, 
-                backgroundColor: Colors.teal,  // For text and icon color
+                backgroundColor: Colors.teal[400],  // For text and icon color
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 textStyle: TextStyle(fontSize: 16),
                 shape: RoundedRectangleBorder(
@@ -55,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Colors.teal),
+        Icon(icon, color: Colors.teal[400]),
         SizedBox(width: 8),
         Text(
           '$label ',

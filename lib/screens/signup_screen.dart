@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:progresfp1/screens/signin_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 import '../screens/home.dart'; 
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
@@ -14,7 +17,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
-  bool agreePersonalData = true;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  bool agreePersonalData = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 40.0),
                       TextFormField(
+                        controller: nameController, // Controller untuk Nama
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Full name';
@@ -75,9 +81,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 25.0),
                       TextFormField(
+                        controller: emailController, // Controller untuk Email
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'Please enter a valid email';
                           }
                           return null;
                         },
@@ -147,9 +157,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              Navigator.push(
+                            if (_formSignupKey.currentState!.validate() && agreePersonalData) {
+                              String currentDate = DateFormat('dd MMMM yyyy').format(DateTime.now());
+
+                              // Menyimpan nama pengguna ke UserProvider
+                              Provider.of<UserProvider>(context, listen: false)
+                                .setName(nameController.text);
+                              // Menyimpan email ke UserProvider
+                              Provider.of<UserProvider>(context, listen: false)
+                                .setEmail(emailController.text);
+                              // Menyimpan tanggal bergabung ke UserProvider
+                              Provider.of<UserProvider>(context, listen: false)
+                                .setJoinDate(currentDate);
+                              
+                              // Navigasi ke Home setelah signup berhasil
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => HomeScreen(),

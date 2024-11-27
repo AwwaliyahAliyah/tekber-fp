@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progresfp1/screens/signup_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 import '../widgets/custom_scaffold.dart';
 import '../theme/theme.dart';
 import '../screens/home.dart';
@@ -13,7 +15,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
-  bool rememberPassword = true;
+  TextEditingController emailController = TextEditingController();
+  bool rememberPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +58,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
+                          }
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            return 'Please enter a valid email';
                           }
                           return null;
                         },
@@ -156,20 +163,16 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                            if (_formSignInKey.currentState!.validate()) {
+                              // Menyimpan email ke UserProvider
+                              Provider.of<UserProvider>(context, listen: false)
+                                .setEmail(emailController.text); // Sementara seperti ini karena belum terhubung dengan database sehingga tidak bisa mengambil data signup dari UserProvider
+
                               // Navigasi ke halaman HomeScreen
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => HomeScreen(),
-                                ),
-                              );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Please agree to the processing of personal data'),
                                 ),
                               );
                             }
