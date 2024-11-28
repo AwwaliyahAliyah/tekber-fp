@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/category_provider.dart';
 import 'providers/note_provider.dart';
 import 'providers/user_provider.dart';
+import 'providers/search_provider.dart';
 
 void main() {
   runApp(NoteTakingApp());
@@ -17,6 +18,7 @@ class NoteTakingApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => NoteProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -4,6 +4,7 @@ import 'package:progresfp1/widgets/category_section.dart';
 import 'package:progresfp1/screens/favorite.dart';
 import 'package:progresfp1/screens/profile.dart';
 import '../providers/note_provider.dart';
+import '../providers/search_provider.dart';
 import '../widgets/note_card.dart';
 import 'add_note.dart';
 
@@ -25,7 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final noteProvider = Provider.of<NoteProvider>(context);
+    final searchProvider = Provider.of<SearchProvider>(context);
     final notes = noteProvider.notes;
+    final filteredNotes = searchProvider.searchNotes(notes);
+
 
     // Konten untuk setiap tab
     List<Widget> _pages = [
@@ -42,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
               right: 16.0
             ),
             child: TextField(
+              onChanged: (query) {
+                searchProvider.setSearchQuery(query); // Update pencarian saat query berubah
+              },
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Search notes',
@@ -67,16 +74,23 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0),
-              child: ListView.builder(
-                itemCount: notes.length,
-                itemBuilder: (context, index) {
-                  final note = notes[index];
-                  return NoteCard(
-                    note: note,
-                    onFavoriteToggle: () => noteProvider.toggleFavorite(note),
-                  );
-                },
-              ),
+              child: filteredNotes.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No notes found',
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                    )
+                  : ListView.builder(
+                    itemCount: filteredNotes.length,
+                    itemBuilder: (context, index) {
+                      final note = filteredNotes[index];
+                      return NoteCard(
+                        note: note,
+                        onFavoriteToggle: () => noteProvider.toggleFavorite(note),
+                      );
+                    },
+                  ),
             ),
           ),
         ],
