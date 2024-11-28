@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progresfp1/screens/signup_screen.dart';
 import 'package:provider/provider.dart';
+import 'providers/category_provider.dart';
 import 'providers/note_provider.dart';
 import 'providers/user_provider.dart';
 
@@ -13,6 +14,7 @@ class NoteTakingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => NoteProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
