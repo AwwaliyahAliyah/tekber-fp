@@ -144,10 +144,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton.icon(
+                    ElevatedButton(
                       onPressed: _saveCategory,
-                      icon: Icon(Icons.save, color: Colors.grey[100]),
-                      label: Text(
+                      child: Text(
                         'Simpan',
                         style: TextStyle(
                           fontSize: 16,
