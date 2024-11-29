@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/note_provider.dart';
 import '../providers/user_provider.dart';
 import '../screens/edit_profile.dart';
+import '../screens/signin_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
               builder: (context, userProvider, _) {
                 return Text(
                   userProvider.name.isNotEmpty
-                      ? userProvider.name
+                      ? userProvider.name 
                       : 'Username',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 );
@@ -101,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text("Log Out"),
-                    content: Text("Apakah Anda yakin ingin log out?"),
+                    content: Text("Apakah Anda yakin ingin logout?"),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -111,11 +112,12 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          // Logika logout, misalnya reset state dan navigasi
-                          Provider.of<UserProvider>(context, listen: false)
-                              .logout();
+                          Provider.of<UserProvider>(context, listen: false).logout();
                           Navigator.pop(context); // Tutup dialog
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => SignInScreen()),
+                          );
                         },
                         child: Text("Log Out"),
                       ),
@@ -126,8 +128,8 @@ class ProfileScreen extends StatelessWidget {
               icon: Icon(Icons.logout),
               label: Text("Log Out"),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.red,
+                foregroundColor: Colors.grey[100],
+                backgroundColor: Colors.red.shade400,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
