@@ -129,7 +129,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
             SizedBox(height: 16),
 
             // Tombol Simpan
-            ElevatedButton.icon(
+            ElevatedButton(
               onPressed: () {
                 // Kembalikan data yang diedit
                 Navigator.pop(context, {
@@ -138,8 +138,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   'content': _contentController.text,
                 });
               },
-              icon: Icon(Icons.save, color: Colors.grey[100]),
-              label: Text(
+              child: Text(
                 'Simpan',
                 style: TextStyle(
                   fontSize: 16,
