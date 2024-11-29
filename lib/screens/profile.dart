@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/note_provider.dart';
 import '../providers/user_provider.dart';
+import '../screens/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
                 return Text(
                   userProvider.name.isNotEmpty
                     ? userProvider.name
-                    : 'Nama Pengguna',
+                    : 'Username',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 );
               },
@@ -73,15 +74,18 @@ class ProfileScreen extends StatelessWidget {
             
             ElevatedButton.icon(
               onPressed: () {
-                // Add your edit profile functionality here
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                );
               },
-              icon: Icon(Icons.edit, size: 18),
-              label: Text("Edit Profile"),
+              icon: Icon(Icons.edit),
+              label: Text("Edit Profil"),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, 
+                foregroundColor: Colors.grey[100], 
                 backgroundColor: Colors.teal[400],  // For text and icon color
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                textStyle: TextStyle(fontSize: 16),
+                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
