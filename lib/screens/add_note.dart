@@ -104,10 +104,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton.icon(
+                    ElevatedButton(
                       onPressed: _saveNote,
-                      icon: Icon(Icons.save, color: Colors.grey[100]),
-                      label: Text(
+                      child: Text(
                         'Simpan',
                         style: TextStyle(
                           fontSize: 16,
