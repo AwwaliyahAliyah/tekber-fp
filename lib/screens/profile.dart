@@ -25,8 +25,8 @@ class ProfileScreen extends StatelessWidget {
               builder: (context, userProvider, _) {
                 return Text(
                   userProvider.name.isNotEmpty
-                    ? userProvider.name
-                    : 'Username',
+                      ? userProvider.name
+                      : 'Username',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 );
               },
@@ -38,8 +38,8 @@ class ProfileScreen extends StatelessWidget {
               builder: (context, userProvider, _) {
                 return Text(
                   userProvider.email.isNotEmpty
-                    ? userProvider.email
-                    : 'email@example.com',
+                      ? userProvider.email
+                      : 'email@example.com',
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 );
               },
@@ -53,8 +53,8 @@ class ProfileScreen extends StatelessWidget {
                   Icons.calendar_today,
                   'Tanggal Bergabung:',
                   userProvider.joinDate.isNotEmpty
-                    ? userProvider.joinDate
-                    : '01 November 2024',
+                      ? userProvider.joinDate
+                      : '01 November 2024',
                 );
               },
             ),
@@ -71,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
               },
             ),
             SizedBox(height: 24),
-            
+
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
@@ -82,8 +82,52 @@ class ProfileScreen extends StatelessWidget {
               icon: Icon(Icons.edit),
               label: Text("Edit Profil"),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.grey[100], 
-                backgroundColor: Colors.teal[400],  // For text and icon color
+                foregroundColor: Colors.grey[100],
+                backgroundColor: Colors.teal[400], // For text and icon color
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+
+            // Tombol Logout
+            ElevatedButton.icon(
+              onPressed: () {
+                // Logika untuk log out
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("Log Out"),
+                    content: Text("Apakah Anda yakin ingin log out?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Tutup dialog
+                        },
+                        child: Text("Batal"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Logika logout, misalnya reset state dan navigasi
+                          Provider.of<UserProvider>(context, listen: false)
+                              .logout();
+                          Navigator.pop(context); // Tutup dialog
+                          Navigator.pushReplacementNamed(context, '/login');
+                        },
+                        child: Text("Log Out"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icon(Icons.logout),
+              label: Text("Log Out"),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 shape: RoundedRectangleBorder(

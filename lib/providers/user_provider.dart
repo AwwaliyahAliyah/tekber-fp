@@ -27,6 +27,15 @@ class UserProvider extends ChangeNotifier {
   void updateUserProfile(String name, String email, String joinDate) {
     _name = name;
     _email = email;
+    _joinDate = joinDate;
+    notifyListeners();
+  }
+
+  // Tambahkan metode logout
+  void logout() {
+    _name = '';
+    _email = '';
+    _joinDate = '';
     notifyListeners();
   }
 }
