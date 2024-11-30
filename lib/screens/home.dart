@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:progresfp1/widgets/category_section.dart';
 import 'package:progresfp1/screens/favorite.dart';
 import 'package:progresfp1/screens/profile.dart';
+import '../providers/category_provider.dart';
 import '../providers/note_provider.dart';
 import '../providers/search_provider.dart';
+import '../screens/add_category.dart';
 import '../widgets/note_card.dart';
 import 'add_note.dart';
 
@@ -20,15 +22,27 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
+      // Jika beralih ke tab Beranda, hapus kategori yang dipilih
+      if (_selectedIndex == 0 || _selectedIndex == 1) {
+        Provider.of<CategoryProvider>(context, listen: false).clearSelectedCategory();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final noteProvider = Provider.of<NoteProvider>(context);
+    final categoryProvider = Provider.of<CategoryProvider>(context);
     final searchProvider = Provider.of<SearchProvider>(context);
     final notes = noteProvider.notes;
-    final filteredNotes = searchProvider.searchNotes(notes);
+
+    final filteredNotes = searchProvider.searchNotes(notes).where((note) {
+      // Jika tidak ada kategori yang dipilih, tampilkan semua catatan
+      if (categoryProvider.selectedCategory == null) return true;
+      // Filter catatan berdasarkan kategori yang dipilih
+      return note.categoryId == categoryProvider.selectedCategory!.id;
+    }).toList();
 
 
     // Konten untuk setiap tab
@@ -158,8 +172,46 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddNoteScreen()));
+                // Periksa apakah kategori sudah dipilih
+                if (categoryProvider.selectedCategory == null) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Kategori Kosong"),
+                        content: Text(
+                            "Anda harus memilih kategori terlebih dahulu."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Tutup"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddCategoryScreen(),
+                                ),
+                              );
+                            },
+                            child: Text("Tambah Kategori"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  // Jika kategori sudah dipilih, buka halaman tambah catatan
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddNoteScreen(),
+                    ),
+                  );
+                }
               },
               child: Icon(Icons.add, color: Colors.grey[100]),
               tooltip: 'Tambah Catatan',

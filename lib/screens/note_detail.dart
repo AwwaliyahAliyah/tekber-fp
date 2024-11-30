@@ -33,6 +33,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
       title: title,
       date: date,
       content: content,
+      categoryId: widget.note.categoryId,
       isFavorite: widget.note.isFavorite, // Mempertahankan status favorit
     );
 

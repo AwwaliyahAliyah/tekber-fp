@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/category_provider.dart';
 import '../providers/note_provider.dart';
 import '../providers/search_provider.dart';
 import 'package:progresfp1/widgets/category_section.dart';
@@ -8,10 +9,17 @@ import 'package:progresfp1/widgets/note_card.dart';
 class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final noteProvider = Provider.of<NoteProvider>(context);
     final searchProvider = Provider.of<SearchProvider>(context);
-    final favoriteNotes = searchProvider.searchNotes(
-      Provider.of<NoteProvider>(context).favoriteNotes,
-    ); // Mendapatkan hasil pencarian dari favorit notes
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+
+    // Mendapatkan catatan favorit
+    final favoriteNotes = searchProvider.searchNotes(noteProvider.favoriteNotes).where((note) {
+      // Jika tidak ada kategori yang dipilih, tampilkan semua catatan favorit
+      if (categoryProvider.selectedCategory == null) return true;
+      // Filter catatan favorit berdasarkan kategori yang dipilih
+      return note.categoryId == categoryProvider.selectedCategory!.id;
+    }).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

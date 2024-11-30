@@ -9,6 +9,7 @@ class CategorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<CategoryProvider>(context);
     final categories = categoryProvider.categories;
+    final selectedCategory = categoryProvider.selectedCategory;
     
     // Lebar dinamis kategori
     final double categoryWidth = MediaQuery.of(context).size.width / 5.5;
@@ -32,11 +33,18 @@ class CategorySection extends StatelessWidget {
               children: [
                 // Menampilkan kategori yang ada
                 ...categories.map((category) {
-                  return CategoryCard(
-                    icon: category.icon,
-                    label: category.label,
-                    color: category.color,
-                    width: categoryWidth,
+                  return GestureDetector(
+                    onTap: () {
+                      categoryProvider.setSelectedCategory(category);
+                    },
+                    child: CategoryCard(
+                      icon: category.icon,
+                      label: category.label,
+                      color: selectedCategory == category
+                        ? category.color.withOpacity(0.0)
+                        : category.color,
+                      width: categoryWidth,
+                    ),
                   );
                 }).toList(),
                 // Menambahkan tombol AddCategoryCard

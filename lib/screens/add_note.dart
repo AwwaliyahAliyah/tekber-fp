@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../models/note_model.dart';
+import '../providers/category_provider.dart';
 import '../providers/note_provider.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -25,10 +26,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   // Fungsi untuk menyimpan catatan baru
   void _saveNote() {
     if (_formKey.currentState!.validate()) {
+      final categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
       final newNote = Note(
         title: _titleController.text.trim(),
         date: DateFormat('d MMM yyyy').format(DateTime.now()),
         content: _contentController.text.trim(),
+        categoryId: categoryProvider.selectedCategory!.id,
       );
 
       Provider.of<NoteProvider>(context, listen: false).addNote(newNote);

@@ -38,7 +38,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   // Fungsi untuk menyimpan kategori baru
   void _saveCategory() {
     if (_formKey.currentState!.validate() && selectedIcon != null) {
+      // Menentukan ID yang unik untuk kategori baru
+      final existingCategories = Provider.of<CategoryProvider>(context, listen: false).categories;
+      int newId = existingCategories.isEmpty ? 1 : existingCategories.last.id + 1;
+
       final newCategory = Category(
+        id: newId,
         label: _categoryController.text.trim(),
         icon: selectedIcon!,
         color: selectedColor,
