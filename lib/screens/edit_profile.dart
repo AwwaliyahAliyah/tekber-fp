@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
 
@@ -9,8 +11,21 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
   String? _name;
   String? _email;
+  File? _profilePicture;
+
+  Future<void> _pickImage() async {
+    final XFile? pickedImage = await _picker.pickImage(
+      source: ImageSource.gallery, // Atau ImageSource.camera untuk mengambil foto
+    );
+    if (pickedImage != null) {
+      setState(() {
+        _profilePicture = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +58,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   // Foto Profil
                   Stack(
                     children: [
-                      CircleAvatar(
-                        radius: 54,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.teal[200],
-                          child:
-                              Icon(Icons.person, size: 50, color: Colors.white),
-                        ),
+                      ClipOval(
+                        child: _profilePicture != null
+                            ? Image.file(
+                                _profilePicture!,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
+                            : (userProvider.profilePicture.startsWith('assets/')
+                                ? Image.asset(
+                                    userProvider.profilePicture,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.file(
+                                    File(userProvider.profilePicture),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  )),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         child: InkWell(
-                          onTap: () {
-                            // Add functionality to upload a new profile picture
-                          },
+                          onTap: _pickImage,
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
@@ -161,6 +186,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           userProvider.joinDate, // Tidak diubah
                         );
 
+                        if (_profilePicture != null) {
+                          userProvider.setProfilePicture(
+                              _profilePicture!.path);
+                        }
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Profil berhasil diperbarui')),
                         );
@@ -170,7 +200,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[400],
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       elevation: 6,
                     ),
                     child: Text(

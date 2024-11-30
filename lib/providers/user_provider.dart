@@ -4,10 +4,14 @@ class UserProvider extends ChangeNotifier {
   String _name = '';
   String _email = '';
   String _joinDate = '';
+  String _profilePicture = '';
 
   String get name => _name;
   String get email => _email;
   String get joinDate => _joinDate;
+  String get profilePicture => _profilePicture.isNotEmpty
+      ? _profilePicture
+      : 'assets/images/default_profile.jpg';
 
   void setName(String name) {
     _name = name;
@@ -24,10 +28,16 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setProfilePicture(String profilePicture) {
+      _profilePicture = profilePicture;
+      notifyListeners();
+  }
+
   void updateUserProfile(String name, String email, String joinDate) {
     _name = name;
     _email = email;
     _joinDate = joinDate;
+    _profilePicture = profilePicture;
     notifyListeners();
   }
 
@@ -36,6 +46,7 @@ class UserProvider extends ChangeNotifier {
     _name = '';
     _email = '';
     _joinDate = '';
+    _profilePicture = '';
     notifyListeners();
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/note_provider.dart';
@@ -14,10 +15,24 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.teal[200],
-              child: Icon(Icons.person, size: 50, color: Colors.white),
+            Consumer<UserProvider>(
+              builder: (context, userProvider, _) {
+                return ClipOval(
+                  child: userProvider.profilePicture.startsWith('assets/')
+                      ? Image.asset(
+                          userProvider.profilePicture,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(userProvider.profilePicture),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                );
+              },
             ),
             SizedBox(height: 16),
 
@@ -25,9 +40,7 @@ class ProfileScreen extends StatelessWidget {
             Consumer<UserProvider>(
               builder: (context, userProvider, _) {
                 return Text(
-                  userProvider.name.isNotEmpty
-                      ? userProvider.name 
-                      : 'Username',
+                  userProvider.name.isNotEmpty ? userProvider.name : 'Username',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 );
               },
@@ -112,11 +125,13 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Provider.of<UserProvider>(context, listen: false).logout();
+                          Provider.of<UserProvider>(context, listen: false)
+                              .logout();
                           Navigator.pop(context); // Tutup dialog
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => SignInScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => SignInScreen()),
                           );
                         },
                         child: Text("Log Out"),
