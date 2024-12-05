@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.teal[400],
         iconTheme: IconThemeData(color: Colors.grey[300]),
         actions: [
-          if (_selectedIndex == 0 || _selectedIndex == 1)
+          if (_selectedIndex == 2)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: IconButton(
@@ -134,28 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => AlertDialog(
                       title: Text('Pengaturan'),
                       content: Text('Fitur pengaturan akan segera hadir!'),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text('Tutup')),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          if (_selectedIndex == 2)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: IconButton(
-                icon: Icon(Icons.more_vert),
-                tooltip: 'Logout',
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Logout'),
-                      content: Text('Fitur logout akan segera hadir!'),
                       actions: [
                         TextButton(
                             onPressed: () => Navigator.pop(context),
