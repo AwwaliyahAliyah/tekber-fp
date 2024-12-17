@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492749414488",
+    "project_id": "tekberfp-aaedf",
+    "storage_bucket": "tekberfp-aaedf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492749414488:android:207a3f642c3c462d43ea2d",
+        "android_client_info": {
+          "package_name": "com.example.progresfp1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCGhg8OnDXZi0AiUqnNeur4-au1_lAyV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
