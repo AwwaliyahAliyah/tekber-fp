@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:progresfp1/screens/signup_screen.dart';
+import 'package:progresfp1/screens/starting_screen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/category_provider.dart';
@@ -33,7 +33,7 @@ class NoteTakingApp extends StatelessWidget {
           primarySwatch: Colors.teal,
           scaffoldBackgroundColor: Colors.blueGrey[100],
         ),
-        home: SignUpScreen(),
+        home: StartingPage(),
       ),
     );
   }
