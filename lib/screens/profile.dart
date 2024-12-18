@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart'; // For kIsWeb
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/note_provider.dart';
@@ -18,19 +19,17 @@ class ProfileScreen extends StatelessWidget {
             Consumer<UserProvider>(
               builder: (context, userProvider, _) {
                 return ClipOval(
-                  child: userProvider.profilePicture.startsWith('assets/')
-                      ? Image.asset(
-                          userProvider.profilePicture,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          File(userProvider.profilePicture),
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
+                  child: kIsWeb
+                      ? (userProvider.profilePictureBytes != null
+                          ? Image.memory(userProvider.profilePictureBytes!,
+                              width: 120, height: 120, fit: BoxFit.cover)
+                          : Image.asset('assets/images/default_profile.jpg',
+                              width: 120, height: 120))
+                      : (userProvider.profilePictureFile != null
+                          ? Image.file(userProvider.profilePictureFile!,
+                              width: 120, height: 120, fit: BoxFit.cover)
+                          : Image.asset('assets/images/default_profile.jpg',
+                              width: 120, height: 120)),
                 );
               },
             ),

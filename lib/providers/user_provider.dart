@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -12,6 +14,14 @@ class UserProvider extends ChangeNotifier {
   String get profilePicture => _profilePicture.isNotEmpty
       ? _profilePicture
       : 'assets/images/default_profile.jpg';
+
+  // Web Image
+  Uint8List? _profilePictureBytes;
+  Uint8List? get profilePictureBytes => _profilePictureBytes;
+
+  // Mobile Image
+  File? _profilePictureFile;
+  File? get profilePictureFile => _profilePictureFile;
 
   void setName(String name) {
     _name = name;
@@ -29,8 +39,19 @@ class UserProvider extends ChangeNotifier {
   }
 
   void setProfilePicture(String profilePicture) {
-      _profilePicture = profilePicture;
-      notifyListeners();
+    _profilePicture = profilePicture;
+    notifyListeners();
+  }
+
+  // Methods to update the profile picture
+  void updateProfilePictureBytes(Uint8List bytes) {
+    _profilePictureBytes = bytes;
+    notifyListeners();
+  }
+
+  void updateProfilePictureFile(File file) {
+    _profilePictureFile = file;
+    notifyListeners();
   }
 
   void updateUserProfile(String name, String email, String joinDate) {

@@ -3,30 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/user_provider.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
 
 class EditProfileScreen extends StatefulWidget {
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
+Uint8List? _webImage; // Variable to store image bytes for web
+
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
+  Uint8List? _webImage; // For Web
+  File? _mobileImage;   // For Mobile
   String? _name;
   String? _email;
-  File? _profilePicture;
 
   Future<void> _pickImage() async {
-    final XFile? pickedImage = await _picker.pickImage(
-      source: ImageSource.gallery, // Atau ImageSource.camera untuk mengambil foto
-    );
+    final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+
     if (pickedImage != null) {
-      setState(() {
-        _profilePicture = File(pickedImage.path);
-      });
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      if (kIsWeb) {
+        // For Web: Read as bytes
+        final bytes = await pickedImage.readAsBytes();
+        setState(() {
+          _webImage = bytes;
+        });
+        userProvider.updateProfilePictureBytes(bytes);
+      } else {
+        // For Mobile: Use File
+        setState(() {
+          _mobileImage = File(pickedImage.path);
+        });
+        userProvider.updateProfilePictureFile(File(pickedImage.path));
+      }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
@@ -59,26 +74,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Stack(
                     children: [
                       ClipOval(
-                        child: _profilePicture != null
-                            ? Image.file(
-                                _profilePicture!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
-                            : (userProvider.profilePicture.startsWith('assets/')
-                                ? Image.asset(
-                                    userProvider.profilePicture,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.file(
-                                    File(userProvider.profilePicture),
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  )),
+                        child: kIsWeb
+                            ? (_webImage != null
+                                ? Image.memory(_webImage!, width: 120, height: 120, fit: BoxFit.cover)
+                                : userProvider.profilePictureBytes != null
+                                    ? Image.memory(userProvider.profilePictureBytes!, width: 120, height: 120, fit: BoxFit.cover)
+                                    : Image.asset('assets/images/default_profile.jpg', width: 120, height: 120))
+                            : (_mobileImage != null
+                                ? Image.file(_mobileImage!, width: 120, height: 120, fit: BoxFit.cover)
+                                : userProvider.profilePictureFile != null
+                                    ? Image.file(userProvider.profilePictureFile!, width: 120, height: 120, fit: BoxFit.cover)
+                                    : Image.asset('assets/images/default_profile.jpg', width: 120, height: 120)),
                       ),
                       Positioned(
                         bottom: 0,
@@ -186,10 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           userProvider.joinDate, // Tidak diubah
                         );
 
-                        if (_profilePicture != null) {
-                          userProvider.setProfilePicture(
-                              _profilePicture!.path);
-                        }
+
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Profil berhasil diperbarui')),
